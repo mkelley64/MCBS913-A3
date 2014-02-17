@@ -182,7 +182,7 @@ sub writeLogFile
 {
     my @logData = @_;
        
-    my $logFilePrefix = getLogPrefix("clustalFileHandler");
+    my $logFilePrefix = getLogFilePrefix("clustalFileHandler", 0);
     
     unless (open(OUTPUT, ">$logFilePrefix.log")) {
         print "Can not write to $logFilePrefix.log";
@@ -211,9 +211,23 @@ sub writeLogFile
 #
 sub getLogFilePrefix
 {
-    my $inPrefix = $_;
+    no warnings 'recursion'; # turn off recursion warnings
+                           # in this block _only_
+                           
+    my($inPrefix, $index) = @_;
     
-    return $inPrefix;
+    my $modPrefix = $index ? "$inPrefix-$index" : $inPrefix;
+      
+    if (-e "$modPrefix.log") {
+        if ($index > 9) {
+            unlink "$modPrefix.log" or warn "Could not delete $modPrefix.log";
+        
+        } else {
+            rename("$modPrefix.log", getLogFilePrefix($inPrefix, ++$index) . ".log") or warn "Could not rename file modPrefix.log";
+        }
+    }
+    
+    return $modPrefix;
 }
 
 
