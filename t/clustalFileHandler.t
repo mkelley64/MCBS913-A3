@@ -133,14 +133,14 @@ is($ouzString, "UZ", 'Handles multiple gaps in range');
 
 #--------- Case 0 ---------------
 # No alignments -> no revisions 
-$seq0 = "ABCZ---";
-$seq1 = "U---DEF";
+$seq0 = {'seq' => "ABCZ---", 'header' => 'test.1'};
+$seq1 = {'seq' => "U---DEF", 'header' => 'test.2'};
 
 my $seqArray = [$seq0, $seq1];
 my ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 0, 6);
 my @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "ABCZ---", 'Handles no revisions case, first sequence');
-is($revSeqs[1], "U---DEF", 'Handles no revisions case, second sequence');
+is($revSeqs[0]->{'seq'}, "ABCZ---", 'Handles no revisions case, first sequence');
+is($revSeqs[1]->{'seq'}, "U---DEF", 'Handles no revisions case, second sequence');
 is($modFlag, "F", 'Handles no revisions case, modification flag');
 is($ambigFlag, "", 'Handles no revisions case, ambiguous flag');
 
@@ -148,31 +148,31 @@ is($ambigFlag, "", 'Handles no revisions case, ambiguous flag');
 # Starts aligned, but not ends - move to start
 
 # w/o revs
-$seq0 = "Z------ABC";
-$seq1 = "U---DEFGHI";
-$seq2 = "O--------J";
+$seq0 = {'seq' => "Z------ABC", 'header' => 'test.1'};
+$seq1 = {'seq' => "U---DEFGHI", 'header' => 'test.2'};
+$seq2 = {'seq' => "O--------J", 'header' => 'test.3'};
 
 $seqArray = [$seq0, $seq1, $seq2];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 0, 8);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "Z------ABC", 'Handles Case 1 w/o rev, first sequence');
-is($revSeqs[1], "U---DEFGHI", 'Handles Case 1 w/o rev, second sequence');
-is($revSeqs[2], "O--------J", 'Handles Case 1 w/o rev, third sequence');
+is($revSeqs[0]->{'seq'}, "Z------ABC", 'Handles Case 1 w/o rev, first sequence');
+is($revSeqs[1]->{'seq'}, "U---DEFGHI", 'Handles Case 1 w/o rev, second sequence');
+is($revSeqs[2]->{'seq'}, "O--------J", 'Handles Case 1 w/o rev, third sequence');
 is($modFlag, "F", 'Handles Case 1 w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 1 w/o rev, ambiguous flag');
 
 
 # w/revs
-$seq0 = "------ZABC";
-$seq1 = "U---DEFGHI";
-$seq2 = "O--------J";
+$seq0 = {'seq' => "------ZABC", 'header' => 'test.1'};
+$seq1 = {'seq' => "U---DEFGHI", 'header' => 'test.2'};
+$seq2 = {'seq' => "O--------J", 'header' => 'test.3'};
 
 $seqArray = [$seq0, $seq1, $seq2];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 0, 8);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "Z------ABC", 'Handles Case 1 w/rev, first sequence');
-is($revSeqs[1], "U---DEFGHI", 'Handles Case 1 w/rev, second sequence');
-is($revSeqs[2], "O--------J", 'Handles Case 1 w/rev, third sequence');
+is($revSeqs[0]->{'seq'}, "Z------ABC", 'Handles Case 1 w/rev, first sequence');
+is($revSeqs[1]->{'seq'}, "U---DEFGHI", 'Handles Case 1 w/rev, second sequence');
+is($revSeqs[2]->{'seq'}, "O--------J", 'Handles Case 1 w/rev, third sequence');
 is($modFlag, "T", 'Handles Case 1 w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 1 w/rev, ambiguous flag');
 
@@ -181,30 +181,30 @@ is($ambigFlag, "", 'Handles Case 1 w/rev, ambiguous flag');
 # case where ends aligned, but not starts - move to end
 
 # w/o revs
-$seq0 = "CBA------Z";
-$seq1 = "IHGFED---U";
-$seq2 = "---------O";
+$seq0 = {'seq' => "CBA------Z", 'header' => 'test.1'};
+$seq1 = {'seq' => "IHGFED---U", 'header' => 'test.2'};
+$seq2 = {'seq' => "---------O", 'header' => 'test.3'};
 
 $seqArray = [$seq0, $seq1, $seq2];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 0, 9);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "CBA------Z", 'Handles Case 2 w/o rev, first sequence');
-is($revSeqs[1], "IHGFED---U", 'Handles Case 2 w/o rev, second sequence');
-is($revSeqs[2], "---------O", 'Handles Case 2 w/o rev, third sequence');
+is($revSeqs[0]->{'seq'}, "CBA------Z", 'Handles Case 2 w/o rev, first sequence');
+is($revSeqs[1]->{'seq'}, "IHGFED---U", 'Handles Case 2 w/o rev, second sequence');
+is($revSeqs[2]->{'seq'}, "---------O", 'Handles Case 2 w/o rev, third sequence');
 is($modFlag, "F", 'Handles Case 2 w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 2 w/o rev, ambiguous flag');
 
 # w/revs
-$seq0 = "CBAZ------";
-$seq1 = "IHGFED---U";
-$seq2 = "O---------";
+$seq0 = {'seq' => "CBAZ------", 'header' => 'test.1'};
+$seq1 = {'seq' => "IHGFED---U", 'header' => 'test.2'};
+$seq2 = {'seq' => "O---------", 'header' => 'test.3'};
 
 $seqArray = [$seq0, $seq1, $seq2];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 0, 9);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "CBA------Z", 'Handles Case 2 w/rev, first sequence');
-is($revSeqs[1], "IHGFED---U", 'Handles Case 2 w/rev, second sequence');
-is($revSeqs[2], "---------O", 'Handles Case 2 w/rev, third sequence');
+is($revSeqs[0]->{'seq'}, "CBA------Z", 'Handles Case 2 w/rev, first sequence');
+is($revSeqs[1]->{'seq'}, "IHGFED---U", 'Handles Case 2 w/rev, second sequence');
+is($revSeqs[2]->{'seq'}, "---------O", 'Handles Case 2 w/rev, third sequence');
 is($modFlag, "T", 'Handles Case 2 w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 2 w/rev, ambiguous flag');
 
@@ -212,34 +212,34 @@ is($ambigFlag, "", 'Handles Case 2 w/rev, ambiguous flag');
 # case where both starts and ends aligned, no no-dash info
 
 # w/o revs
-$seq0 = "AU-----B";
-$seq1 = "CO-----D";
-$seq2 = "EZ-----F";
-$seq3 = "GHIJKLMN";
+$seq0 = {'seq' => "AU-----B", 'header' => 'test.1'};
+$seq1 = {'seq' => "CO-----D", 'header' => 'test.2'};
+$seq2 = {'seq' => "EZ-----F", 'header' => 'test.3'};
+$seq3 = {'seq' => "GHIJKLMN", 'header' => 'test.4'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "AU-----B", 'Handles Case 3A w/o rev, first sequence');
-is($revSeqs[1], "CO-----D", 'Handles Case 3A w/o rev, second sequence');
-is($revSeqs[2], "EZ-----F", 'Handles Case 3A w/o rev, third sequence');
-is($revSeqs[3], "GHIJKLMN", 'Handles Case 3A w/o rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "AU-----B", 'Handles Case 3A w/o rev, first sequence');
+is($revSeqs[1]->{'seq'}, "CO-----D", 'Handles Case 3A w/o rev, second sequence');
+is($revSeqs[2]->{'seq'}, "EZ-----F", 'Handles Case 3A w/o rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GHIJKLMN", 'Handles Case 3A w/o rev, fourth sequence');
 is($modFlag, "F", 'Handles Case 3A w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3A w/o rev, ambiguous flag');
 
 # w/revs
-$seq0 = "A-----UB";
-$seq1 = "CO-----D";
-$seq2 = "E-----ZF";
-$seq3 = "GHIJKLMN";
+$seq0 = {'seq' => "A-----UB", 'header' => 'test.1'};
+$seq1 = {'seq' => "CO-----D", 'header' => 'test.2'};
+$seq2 = {'seq' => "E-----ZF", 'header' => 'test.3'};
+$seq3 = {'seq' => "GHIJKLMN", 'header' => 'test.4'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "AU-----B", 'Handles Case 3A w/rev, first sequence');
-is($revSeqs[1], "CO-----D", 'Handles Case 3A w/rev, second sequence');
-is($revSeqs[2], "EZ-----F", 'Handles Case 3A w/rev, third sequence');
-is($revSeqs[3], "GHIJKLMN", 'Handles Case 3A w/rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "AU-----B", 'Handles Case 3A w/rev, first sequence');
+is($revSeqs[1]->{'seq'}, "CO-----D", 'Handles Case 3A w/rev, second sequence');
+is($revSeqs[2]->{'seq'}, "EZ-----F", 'Handles Case 3A w/rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GHIJKLMN", 'Handles Case 3A w/rev, fourth sequence');
 is($modFlag, "T", 'Handles Case 3A w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3A w/rev, ambiguous flag');
 
@@ -247,34 +247,34 @@ is($ambigFlag, "", 'Handles Case 3A w/rev, ambiguous flag');
 #case where [OUZ] in no-dashes at start - move to start
 
 # w/o revs
-$seq0 = "AU-----B";
-$seq1 = "CO-----D";
-$seq2 = "EZ-----F";
-$seq3 = "GZIJKLMN";
+$seq0 = {'seq' => "AU-----B", 'header' => 'test.1'};
+$seq1 = {'seq' => "CO-----D", 'header' => 'test.2'};
+$seq2 = {'seq' => "EZ-----F", 'header' => 'test.3'};
+$seq3 = {'seq' => "GZIJKLMN", 'header' => 'test.4'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "AU-----B", 'Handles Case 3B w/o rev, first sequence');
-is($revSeqs[1], "CO-----D", 'Handles Case 3B w/o rev, second sequence');
-is($revSeqs[2], "EZ-----F", 'Handles Case 3B w/o rev, third sequence');
-is($revSeqs[3], "GZIJKLMN", 'Handles Case 3B w/o rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "AU-----B", 'Handles Case 3B w/o rev, first sequence');
+is($revSeqs[1]->{'seq'}, "CO-----D", 'Handles Case 3B w/o rev, second sequence');
+is($revSeqs[2]->{'seq'}, "EZ-----F", 'Handles Case 3B w/o rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GZIJKLMN", 'Handles Case 3B w/o rev, fourth sequence');
 is($modFlag, "F", 'Handles Case 3B w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3B w/o rev, ambiguous flag');
 
 # w/revs
-$seq0 = "A-----UB";
-$seq1 = "CO-----D";
-$seq2 = "E-----ZF";
-$seq3 = "GZIJKLMN";
+$seq0 = {'seq' => "A-----UB", 'header' => 'test.1'};
+$seq1 = {'seq' => "CO-----D", 'header' => 'test.2'};
+$seq2 = {'seq' => "E-----ZF", 'header' => 'test.3'};
+$seq3 = {'seq' => "GZIJKLMN", 'header' => 'test.4'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "AU-----B", 'Handles Case 3B w/rev, first sequence');
-is($revSeqs[1], "CO-----D", 'Handles Case 3B w/rev, second sequence');
-is($revSeqs[2], "EZ-----F", 'Handles Case 3B w/rev, third sequence');
-is($revSeqs[3], "GZIJKLMN", 'Handles Case 3B w/rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "AU-----B", 'Handles Case 3B w/rev, first sequence');
+is($revSeqs[1]->{'seq'}, "CO-----D", 'Handles Case 3B w/rev, second sequence');
+is($revSeqs[2]->{'seq'}, "EZ-----F", 'Handles Case 3B w/rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GZIJKLMN", 'Handles Case 3B w/rev, fourth sequence');
 is($modFlag, "T", 'Handles Case 3B w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3B w/rev, ambiguous flag');
         
@@ -282,34 +282,34 @@ is($ambigFlag, "", 'Handles Case 3B w/rev, ambiguous flag');
 #case where [OUZ] in no-dashes at end - move to end
 
 # w/o revs
-$seq0 = "A-----UB";
-$seq1 = "C-----OD";
-$seq2 = "E-----ZF";
-$seq3 = "GHIJKLUN";
+$seq0 = {'seq' => "A-----UB", 'header' => 'test.1'};
+$seq1 = {'seq' => "C-----OD", 'header' => 'test.2'};
+$seq2 = {'seq' => "E-----ZF", 'header' => 'test.3'};
+$seq3 = {'seq' => "GHIJKLUN", 'header' => 'test.4'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "A-----UB", 'Handles Case 3C w/o rev, first sequence');
-is($revSeqs[1], "C-----OD", 'Handles Case 3C w/o rev, second sequence');
-is($revSeqs[2], "E-----ZF", 'Handles Case 3C w/o rev, third sequence');
-is($revSeqs[3], "GHIJKLUN", 'Handles Case 3C w/o rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "A-----UB", 'Handles Case 3C w/o rev, first sequence');
+is($revSeqs[1]->{'seq'}, "C-----OD", 'Handles Case 3C w/o rev, second sequence');
+is($revSeqs[2]->{'seq'}, "E-----ZF", 'Handles Case 3C w/o rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GHIJKLUN", 'Handles Case 3C w/o rev, fourth sequence');
 is($modFlag, "F", 'Handles Case 3C w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3C w/o rev, ambiguous flag');
 
 # w/revs
-$seq0 = "AU-----B";
-$seq1 = "CO-----D";
-$seq2 = "E-----ZF";
-$seq3 = "GHIJKLZN";
+$seq0 = {'seq' => "AU-----B", 'header' => 'test.1'};
+$seq1 = {'seq' => "CO-----D", 'header' => 'test.2'};
+$seq2 = {'seq' => "E-----ZF", 'header' => 'test.3'};
+$seq3 = {'seq' => "GHIJKLZN", 'header' => 'test.4'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "A-----UB", 'Handles Case 3C w/rev, first sequence');
-is($revSeqs[1], "C-----OD", 'Handles Case 3C w/rev, second sequence');
-is($revSeqs[2], "E-----ZF", 'Handles Case 3C w/rev, third sequence');
-is($revSeqs[3], "GHIJKLZN", 'Handles Case 3C w/rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "A-----UB", 'Handles Case 3C w/rev, first sequence');
+is($revSeqs[1]->{'seq'}, "C-----OD", 'Handles Case 3C w/rev, second sequence');
+is($revSeqs[2]->{'seq'}, "E-----ZF", 'Handles Case 3C w/rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GHIJKLZN", 'Handles Case 3C w/rev, fourth sequence');
 is($modFlag, "T", 'Handles Case 3C w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3C w/rev, ambiguous flag');
         
@@ -317,38 +317,38 @@ is($ambigFlag, "", 'Handles Case 3C w/rev, ambiguous flag');
 #case where [OUZ] in no-dashes at start AND end - move to start (ambiguous)
 
 # w/o revs
-$seq0 = "AU-----B";
-$seq1 = "CO-----D";
-$seq2 = "EZ-----F";
-$seq3 = "GHIJKLUN";
-$seq4 = "OZPQRSTV";
+$seq0 = {'seq' => "AU-----B", 'header' => 'test.1'};
+$seq1 = {'seq' => "CO-----D", 'header' => 'test.2'};
+$seq2 = {'seq' => "EZ-----F", 'header' => 'test.3'};
+$seq3 = {'seq' => "GHIJKLUN", 'header' => 'test.4'};
+$seq4 = {'seq' => "OZPQRSTV", 'header' => 'test.5'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3, $seq4];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "AU-----B", 'Handles Case 3D w/o rev, first sequence');
-is($revSeqs[1], "CO-----D", 'Handles Case 3D w/o rev, second sequence');
-is($revSeqs[2], "EZ-----F", 'Handles Case 3D w/o rev, third sequence');
-is($revSeqs[3], "GHIJKLUN", 'Handles Case 3D w/o rev, fourth sequence');
-is($revSeqs[4], "OZPQRSTV", 'Handles Case 3D w/o rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "AU-----B", 'Handles Case 3D w/o rev, first sequence');
+is($revSeqs[1]->{'seq'}, "CO-----D", 'Handles Case 3D w/o rev, second sequence');
+is($revSeqs[2]->{'seq'}, "EZ-----F", 'Handles Case 3D w/o rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GHIJKLUN", 'Handles Case 3D w/o rev, fourth sequence');
+is($revSeqs[4]->{'seq'}, "OZPQRSTV", 'Handles Case 3D w/o rev, fourth sequence');
 is($modFlag, "F", 'Handles Case 3C w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3C w/o rev, ambiguous flag');
 
 # w/revs
-$seq0 = "AU-----B";
-$seq1 = "C-----OD";
-$seq2 = "E-----ZF";
-$seq3 = "GHIJKLZN";
-$seq4 = "OZPQRSTV";
+$seq0 = {'seq' => "AU-----B", 'header' => 'test.1'};
+$seq1 = {'seq' => "C-----OD", 'header' => 'test.2'};
+$seq2 = {'seq' => "E-----ZF", 'header' => 'test.3'};
+$seq3 = {'seq' => "GHIJKLZN", 'header' => 'test.4'};
+$seq4 = {'seq' => "OZPQRSTV", 'header' => 'test.5'};
 
 $seqArray = [$seq0, $seq1, $seq2, $seq3, $seq4];
 ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 1, 6);
 @revSeqs = @{$revisedSeqsRef};
-is($revSeqs[0], "AU-----B", 'Handles Case 3D w/rev, first sequence');
-is($revSeqs[1], "CO-----D", 'Handles Case 3D w/rev, second sequence');
-is($revSeqs[2], "EZ-----F", 'Handles Case 3D w/rev, third sequence');
-is($revSeqs[3], "GHIJKLZN", 'Handles Case 3D w/rev, fourth sequence');
-is($revSeqs[4], "OZPQRSTV", 'Handles Case 3D w/rev, fourth sequence');
+is($revSeqs[0]->{'seq'}, "AU-----B", 'Handles Case 3D w/rev, first sequence');
+is($revSeqs[1]->{'seq'}, "CO-----D", 'Handles Case 3D w/rev, second sequence');
+is($revSeqs[2]->{'seq'}, "EZ-----F", 'Handles Case 3D w/rev, third sequence');
+is($revSeqs[3]->{'seq'}, "GHIJKLZN", 'Handles Case 3D w/rev, fourth sequence');
+is($revSeqs[4]->{'seq'}, "OZPQRSTV", 'Handles Case 3D w/rev, fourth sequence');
 is($modFlag, "T", 'Handles Case 3D w/rev, modification flag');
 is($ambigFlag, "ambiguous", 'Handles Case 3D w/rev, ambiguous flag');
 
