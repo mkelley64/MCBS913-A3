@@ -352,3 +352,20 @@ is($revSeqs[4]->{'seq'}, "OZPQRSTV", 'Handles Case 3D w/rev, fourth sequence');
 is($modFlag, "T", 'Handles Case 3D w/rev, modification flag');
 is($ambigFlag, "ambiguous", 'Handles Case 3D w/rev, ambiguous flag');
 
+
+#------------ Case 7 -----------------------------
+
+$seq0 = {'seq' => "SQO-ECM", 'header' => '>K11E4.5'};
+$seq1 = {'seq' => "SQO-ECA", 'header' => '>g26184'};
+$seq2 = {'seq' => "SGPOECQ", 'header' => '>g21196'};
+$seq3 = {'seq' => "SQO-DCM", 'header' => '>g30456'};
+
+$seqArray = [$seq0, $seq1, $seq2, $seq3];
+($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 2, 3);
+@revSeqs = @{$revisedSeqsRef};
+is($revSeqs[0]->{'seq'}, "SQ-OECM", 'Handles Case 3B w/rev, first sequence');
+is($revSeqs[1]->{'seq'}, "SQ-OECA", 'Handles Case 3B w/rev, second sequence');
+is($revSeqs[2]->{'seq'}, "SGPOECQ", 'Handles Case 3B w/rev, third sequence');
+is($revSeqs[3]->{'seq'}, "SQ-ODCM", 'Handles Case 3B w/rev, fourth sequence');
+is($modFlag, "T", 'Handles Case 3B w/rev, modification flag');
+is($ambigFlag, "", 'Handles Case 3B w/rev, ambiguous flag');

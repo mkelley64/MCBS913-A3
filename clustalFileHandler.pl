@@ -186,6 +186,9 @@ sub processFile
                       };
         
         push(@gapLogData, $logData);
+        
+        # update sequences for each overlap
+        @sequences = @{$revisedSeqsRef};
     }
     
     # write revised file if appropriate
