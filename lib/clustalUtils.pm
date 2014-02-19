@@ -120,7 +120,7 @@ sub getRevisedSequenceData
     my($seqs_ref, $overlapStart, $overlapEnd) = @_;
     my @inSeqs= @{$seqs_ref};
 
-    my $modFlag = "N";
+    my $modFlag = "F";
     my $ambigFlag = "";
     my $possAmbigFlag = 0;
     
@@ -131,8 +131,9 @@ sub getRevisedSequenceData
     my $noDashStartMatch  = 0;
     my $noDashEndMatch    = 0;
     
-    for my $seq (@inSeqs) {
+    for my $seqRecord (@inSeqs) {
         
+        my $seq = $seqRecord->{'seq'};    
         my $overlapSeq = substr($seq, $overlapStart, $overlapEnd-$overlapStart + 1);
         my $doesContainDashes = (index($overlapSeq, '-') != -1);
         my $startChar = substr($seq, $overlapStart, 1);
@@ -200,8 +201,9 @@ sub getRevisedSequenceData
     
     # move to start
     if ($revAction == 1) {
-        for my $seq (@inSeqs) {
+        for my $seqRecord (@inSeqs) {
             
+            my $seq = $seqRecord->{'seq'};
             my $newSeq;
             my $overlapSeq = substr($seq, $overlapStart, $overlapEnd-$overlapStart + 1);
             
@@ -209,7 +211,7 @@ sub getRevisedSequenceData
                 $newSeq = substr($seq, 0, $overlapStart) .
                           $overlapSeq .
                           substr($seq, $overlapEnd + 1);  
-                $modFlag = "Y";
+                $modFlag = "T";
                 
                 if ($possAmbigFlag) {
                     $ambigFlag = "ambiguous";
@@ -219,14 +221,19 @@ sub getRevisedSequenceData
                 $newSeq = $seq;
             }
             
-            push (@outSeqs, $newSeq);
+            my $newSeqRecord = { 'seq'     => $newSeq,
+                                 'header'  => $seqRecord->{'header'}
+                               };
+                 
+            push (@outSeqs, $newSeqRecord);
         }
     }
     
     # move to end
     elsif ($revAction == 2) {
-        for my $seq (@inSeqs) {
+        for my $seqRecord (@inSeqs) {
             
+            my $seq = $seqRecord->{'seq'};
             my $newSeq;
             my $overlapSeq = substr($seq, $overlapStart, $overlapEnd-$overlapStart + 1);
             
@@ -234,13 +241,17 @@ sub getRevisedSequenceData
                 $newSeq = substr($seq, 0, $overlapStart) .
                           $overlapSeq .
                           substr($seq, $overlapEnd + 1);  
-                $modFlag = "Y";
+                $modFlag = "T";
             
             } else {
                 $newSeq = $seq;
             }
             
-            push (@outSeqs, $newSeq);
+            my $newSeqRecord = { 'seq'     => $newSeq,
+                                 'header'  => $seqRecord->{'header'}
+                               };
+            
+            push (@outSeqs, $newSeqRecord);
         }
     }
     

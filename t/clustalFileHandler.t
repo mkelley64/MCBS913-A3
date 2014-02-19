@@ -141,7 +141,7 @@ my ($revisedSeqsRef, $modFlag, $ambigFlag) = getRevisedSequenceData($seqArray, 0
 my @revSeqs = @{$revisedSeqsRef};
 is($revSeqs[0], "ABCZ---", 'Handles no revisions case, first sequence');
 is($revSeqs[1], "U---DEF", 'Handles no revisions case, second sequence');
-is($modFlag, "N", 'Handles no revisions case, modification flag');
+is($modFlag, "F", 'Handles no revisions case, modification flag');
 is($ambigFlag, "", 'Handles no revisions case, ambiguous flag');
 
 #--------- Case 1 ---------------
@@ -158,7 +158,7 @@ $seqArray = [$seq0, $seq1, $seq2];
 is($revSeqs[0], "Z------ABC", 'Handles Case 1 w/o rev, first sequence');
 is($revSeqs[1], "U---DEFGHI", 'Handles Case 1 w/o rev, second sequence');
 is($revSeqs[2], "O--------J", 'Handles Case 1 w/o rev, third sequence');
-is($modFlag, "N", 'Handles Case 1 w/o rev, modification flag');
+is($modFlag, "F", 'Handles Case 1 w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 1 w/o rev, ambiguous flag');
 
 
@@ -173,7 +173,7 @@ $seqArray = [$seq0, $seq1, $seq2];
 is($revSeqs[0], "Z------ABC", 'Handles Case 1 w/rev, first sequence');
 is($revSeqs[1], "U---DEFGHI", 'Handles Case 1 w/rev, second sequence');
 is($revSeqs[2], "O--------J", 'Handles Case 1 w/rev, third sequence');
-is($modFlag, "Y", 'Handles Case 1 w/rev, modification flag');
+is($modFlag, "T", 'Handles Case 1 w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 1 w/rev, ambiguous flag');
 
 
@@ -191,7 +191,7 @@ $seqArray = [$seq0, $seq1, $seq2];
 is($revSeqs[0], "CBA------Z", 'Handles Case 2 w/o rev, first sequence');
 is($revSeqs[1], "IHGFED---U", 'Handles Case 2 w/o rev, second sequence');
 is($revSeqs[2], "---------O", 'Handles Case 2 w/o rev, third sequence');
-is($modFlag, "N", 'Handles Case 2 w/o rev, modification flag');
+is($modFlag, "F", 'Handles Case 2 w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 2 w/o rev, ambiguous flag');
 
 # w/revs
@@ -205,7 +205,7 @@ $seqArray = [$seq0, $seq1, $seq2];
 is($revSeqs[0], "CBA------Z", 'Handles Case 2 w/rev, first sequence');
 is($revSeqs[1], "IHGFED---U", 'Handles Case 2 w/rev, second sequence');
 is($revSeqs[2], "---------O", 'Handles Case 2 w/rev, third sequence');
-is($modFlag, "Y", 'Handles Case 2 w/rev, modification flag');
+is($modFlag, "T", 'Handles Case 2 w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 2 w/rev, ambiguous flag');
 
 #--------- Case 3A ---------------    
@@ -224,7 +224,7 @@ is($revSeqs[0], "AU-----B", 'Handles Case 3A w/o rev, first sequence');
 is($revSeqs[1], "CO-----D", 'Handles Case 3A w/o rev, second sequence');
 is($revSeqs[2], "EZ-----F", 'Handles Case 3A w/o rev, third sequence');
 is($revSeqs[3], "GHIJKLMN", 'Handles Case 3A w/o rev, fourth sequence');
-is($modFlag, "N", 'Handles Case 3A w/o rev, modification flag');
+is($modFlag, "F", 'Handles Case 3A w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3A w/o rev, ambiguous flag');
 
 # w/revs
@@ -240,7 +240,7 @@ is($revSeqs[0], "AU-----B", 'Handles Case 3A w/rev, first sequence');
 is($revSeqs[1], "CO-----D", 'Handles Case 3A w/rev, second sequence');
 is($revSeqs[2], "EZ-----F", 'Handles Case 3A w/rev, third sequence');
 is($revSeqs[3], "GHIJKLMN", 'Handles Case 3A w/rev, fourth sequence');
-is($modFlag, "Y", 'Handles Case 3A w/rev, modification flag');
+is($modFlag, "T", 'Handles Case 3A w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3A w/rev, ambiguous flag');
 
 #--------- Case 3B ---------------     
@@ -259,7 +259,7 @@ is($revSeqs[0], "AU-----B", 'Handles Case 3B w/o rev, first sequence');
 is($revSeqs[1], "CO-----D", 'Handles Case 3B w/o rev, second sequence');
 is($revSeqs[2], "EZ-----F", 'Handles Case 3B w/o rev, third sequence');
 is($revSeqs[3], "GZIJKLMN", 'Handles Case 3B w/o rev, fourth sequence');
-is($modFlag, "N", 'Handles Case 3B w/o rev, modification flag');
+is($modFlag, "F", 'Handles Case 3B w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3B w/o rev, ambiguous flag');
 
 # w/revs
@@ -275,7 +275,7 @@ is($revSeqs[0], "AU-----B", 'Handles Case 3B w/rev, first sequence');
 is($revSeqs[1], "CO-----D", 'Handles Case 3B w/rev, second sequence');
 is($revSeqs[2], "EZ-----F", 'Handles Case 3B w/rev, third sequence');
 is($revSeqs[3], "GZIJKLMN", 'Handles Case 3B w/rev, fourth sequence');
-is($modFlag, "Y", 'Handles Case 3B w/rev, modification flag');
+is($modFlag, "T", 'Handles Case 3B w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3B w/rev, ambiguous flag');
         
 #--------- Case 3C --------------- 
@@ -294,7 +294,7 @@ is($revSeqs[0], "A-----UB", 'Handles Case 3C w/o rev, first sequence');
 is($revSeqs[1], "C-----OD", 'Handles Case 3C w/o rev, second sequence');
 is($revSeqs[2], "E-----ZF", 'Handles Case 3C w/o rev, third sequence');
 is($revSeqs[3], "GHIJKLUN", 'Handles Case 3C w/o rev, fourth sequence');
-is($modFlag, "N", 'Handles Case 3C w/o rev, modification flag');
+is($modFlag, "F", 'Handles Case 3C w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3C w/o rev, ambiguous flag');
 
 # w/revs
@@ -310,7 +310,7 @@ is($revSeqs[0], "A-----UB", 'Handles Case 3C w/rev, first sequence');
 is($revSeqs[1], "C-----OD", 'Handles Case 3C w/rev, second sequence');
 is($revSeqs[2], "E-----ZF", 'Handles Case 3C w/rev, third sequence');
 is($revSeqs[3], "GHIJKLZN", 'Handles Case 3C w/rev, fourth sequence');
-is($modFlag, "Y", 'Handles Case 3C w/rev, modification flag');
+is($modFlag, "T", 'Handles Case 3C w/rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3C w/rev, ambiguous flag');
         
 #--------- Case 6 --------------- 
@@ -331,7 +331,7 @@ is($revSeqs[1], "CO-----D", 'Handles Case 3D w/o rev, second sequence');
 is($revSeqs[2], "EZ-----F", 'Handles Case 3D w/o rev, third sequence');
 is($revSeqs[3], "GHIJKLUN", 'Handles Case 3D w/o rev, fourth sequence');
 is($revSeqs[4], "OZPQRSTV", 'Handles Case 3D w/o rev, fourth sequence');
-is($modFlag, "N", 'Handles Case 3C w/o rev, modification flag');
+is($modFlag, "F", 'Handles Case 3C w/o rev, modification flag');
 is($ambigFlag, "", 'Handles Case 3C w/o rev, ambiguous flag');
 
 # w/revs
@@ -349,6 +349,6 @@ is($revSeqs[1], "CO-----D", 'Handles Case 3D w/rev, second sequence');
 is($revSeqs[2], "EZ-----F", 'Handles Case 3D w/rev, third sequence');
 is($revSeqs[3], "GHIJKLZN", 'Handles Case 3D w/rev, fourth sequence');
 is($revSeqs[4], "OZPQRSTV", 'Handles Case 3D w/rev, fourth sequence');
-is($modFlag, "Y", 'Handles Case 3D w/rev, modification flag');
+is($modFlag, "T", 'Handles Case 3D w/rev, modification flag');
 is($ambigFlag, "ambiguous", 'Handles Case 3D w/rev, ambiguous flag');
 

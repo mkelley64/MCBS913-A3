@@ -9,15 +9,13 @@
 #
 my $usageMsg = q(   Usage: clustalFileHandler directory_name [output_directory_name]
 
-        Extract each sequence from a fastafile into a single string.
-        Create reverse complement of sequence
-        Find longest ORF
+        Read all clustal files in a specified directory.
+        Look for overlaps in sequence gaps.
+        If possible, modify sequences to align gaps.
+        Write revised clustal file to output directory.
+        Write log file.
 
-        Output for each sequence is <one line per frame>:
-          
-        sequenceId  frame  longestOrfLength  startPosition
-          
-        Output sent to standard output. );
+         );
           
 use 5.10.0;
 use warnings;
@@ -75,6 +73,7 @@ writeLogFile(@gapLogData);
 
 exit;
 
+
 #+++++++++++++++++++++++++++++++++++++++++++++++
 #                processFile
 #
@@ -114,8 +113,14 @@ sub processFile
             $inLine = <IN>;
         }
         
+        chomp($header);
+        
+        my $seqData = { 'seq'       => $seq,
+                        'header'    => $header
+                       };
+        
         # save sequence
-        push(@sequences, $seq);
+        push(@sequences, $seqData);
         
         # save max sequence length
         my $seqLength = length($seq);
@@ -132,6 +137,8 @@ sub processFile
         $header = $inLine;    # last line read is either next header or null     
     }
     
+    close(IN);
+    
     # merge gaps from all sequences
     my(@overlaps) = mergeGaps(\@gaps, $maxSeqLength);
     
@@ -146,33 +153,46 @@ sub processFile
     $inFile =~ m/(\w+)\./;
     my $filePrefix = $1;
     
+    my $writeNewFileFlag = 0;
+    my $newSeqsRef;
+    
     # for each overlap region detected
     for my $overlap (@overlaps) {
     
         my $ouzCode = "";
         
-        for my $sequence (@sequences) {
-            $ouzCode .= "\." . getOUZCodesFromRange($sequence, $overlap->{'start'}, $overlap->{'end'});
+        # get OUZcode
+        for my $sequenceRecord (@sequences) {
+            $ouzCode .= "\." . getOUZCodesFromRange($sequenceRecord->{'seq'}, $overlap->{'start'}, $overlap->{'end'});
         }
         
         $ouzCode = substr($ouzCode, 1);
         
+        # get revision data
+        my ($revisedSeqsRef, $revFlag, $ambig) = getRevisedSequenceData(\@sequences, $overlap->{'start'}, $overlap->{'end'});
+        
+        if ($revFlag eq "T") {
+            $writeNewFileFlag = 1;
+            $newSeqsRef = $revisedSeqsRef;
+        }
+        
+        # build line of data for log file
         my $logData = { 'head'     => $filePrefix,
                         'gapStart' => $overlap->{'start'},
                         'gapEnd'   => $overlap->{'end'},
                         'ouzCode'  => $ouzCode,
-                        'revFlag'  => "F",
-                        'comment'  => "ambiguous"
+                        'revFlag'  => $revFlag,
+                        'comment'  => $ambig
                       };
         
         push(@gapLogData, $logData);
     }
     
-    # open(my $ofh, '>', "$outDir/$inFile") or die;
- 
-    
-    # close $ofh;
-    close(IN);
+    # write revised file if appropriate
+    if ($writeNewFileFlag) {
+        writeRevisedClustalFile($newSeqsRef, $inFile, $outputDir);
+        say "Writing revised $inFile";
+    }
 }
 
 #+++++++++++++++++++++++++++++++++++++++++++++++
@@ -231,6 +251,23 @@ sub getLogFilePrefix
     return $modPrefix;
 }
 
+#+++++++++++++++++++++++++++++++++++++++++++++++
+#               writeRevisedClustalFile
+#
+sub writeRevisedClustalFile
+{
+    my ($seqRef, $outputFile, $outputDir) = @_;
+    
+    open(my $ofh, '>', "$outputDir/$outputFile") or die "Could not write output file $outputDir/$outputFile.  $!";
+    
+    my @outSeqs = @{$seqRef};
+    
+    for my $seqRecord (@outSeqs) {
+        print $ofh "$seqRecord->{'header'}\n$seqRecord->{'seq'}\n";
+    }
+    
+    close $ofh;
+}
 
 #+++++++++++++++++++++++++++++++++++++++++++++++
 #                checkUsage
