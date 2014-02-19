@@ -27,6 +27,7 @@ use lib 'lib';
 use clustalUtils qw( getGapsFromSequence
                      mergeGaps
                      getOUZCodesFromRange
+                     getRevisedSequenceData
                     );
 
 
@@ -58,6 +59,8 @@ if (-d $outputDir) {
 # read files from input directory
 opendir (DIR, $inputDir) or die "Error opening directory $inputDir. $!";
 
+my @gapLogData;
+
 while (my $file = readdir(DIR)) {
     # Ignore files beginning with a period
     next if ($file =~ m/^\./);
@@ -66,6 +69,9 @@ while (my $file = readdir(DIR)) {
 }
 
 closedir(DIR);
+
+#write results to log file
+writeLogFile(@gapLogData);
 
 exit;
 
@@ -93,7 +99,6 @@ sub processFile
     
     my @sequences;
     my @gaps;
-    my @gapLogData;
     my $maxSeqLength = 0;
     
     # for each sequence
@@ -163,17 +168,12 @@ sub processFile
         push(@gapLogData, $logData);
     }
     
-    #write results to log file
-    writeLogFile(@gapLogData);
-    
-    
     # open(my $ofh, '>', "$outDir/$inFile") or die;
  
     
     # close $ofh;
     close(IN);
 }
-
 
 #+++++++++++++++++++++++++++++++++++++++++++++++
 #               writeLogFile
@@ -200,7 +200,8 @@ sub writeLogFile
                     "\t"                .
                     $data->{'revFlag'}  .
                     "\t"                .
-                    $data->{'comment'};
+                    $data->{'comment'}  .
+                    "\n";
     }
     
     close(OUTPUT);    
